@@ -317,6 +317,24 @@ public static class JsValueExtensions
         return value is JsDataView;
     }
 
+    /// <summary>
+    /// Returns whether a typed array or DataView tracks changes to its buffer's length.
+    /// </summary>
+    /// <param name="value">The value to test.</param>
+    /// <remarks>
+    /// <para>This reads the view's construction mode without invoking script or resizing its buffer.</para>
+    /// <para>The mode is retained when the view is out of bounds or its buffer is detached; this does not validate current bounds.</para>
+    /// <para>Non-view values, including proxies around views, return <see langword="false"/>.</para>
+    /// </remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsLengthTrackingArrayBufferView(this JsValue value)
+    {
+        // https://tc39.es/ecma262/#sec-initializetypedarrayfromarraybuffer
+        // https://tc39.es/ecma262/#sec-properties-of-dataview-instances
+        return value is JsTypedArray { _arrayLength: JsTypedArray.LengthAuto }
+            or JsDataView { _byteLength: JsTypedArray.LengthAuto };
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static byte[]? AsDataView(this JsValue value)
     {
