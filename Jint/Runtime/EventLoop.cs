@@ -303,6 +303,11 @@ internal sealed record EventLoop
                     continue;
                 }
 
+                if (!engine._host.CanExecuteJob())
+                {
+                    continue;
+                }
+
                 // note that a job can enqueue new events
                 job.Run(engine);
             }

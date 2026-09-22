@@ -10,6 +10,47 @@ namespace Jint.Tests.Runtime;
 
 public class PromiseTests
 {
+    private sealed class RetirableHost : Host
+    {
+        public bool Active { get; set; } = true;
+        public override bool CanExecuteJob() => Active;
+    }
+
+    [Fact]
+    public void HostJobGuardFencesQueuedAndNewJobsDuringDrain()
+    {
+        var host = new RetirableHost();
+        var engine = new Engine(options => options.UseHostFactory(_ => host));
+        engine.SetValue("retire", new Action(() => host.Active = false));
+        engine.Execute("""
+            var calls = [];
+            Promise.resolve().then(() => { retire(); calls.push('current'); Promise.resolve().then(() => calls.push('new')); });
+            Promise.resolve().then(() => calls.push('queued'));
+            """);
+        engine.Advanced.ProcessTasks();
+        engine.Evaluate("calls.join(',')").AsString().Should().Be("current");
+        engine.Execute("Promise.resolve().then(() => calls.push('later'))");
+        engine.Evaluate("calls.join(',')").AsString().Should().Be("current");
+    }
+
+    [Fact]
+    public void HostJobGuardFencesLaterManualPromiseSettlement()
+    {
+        var host = new RetirableHost();
+        var engine = new Engine(options => options.UseHostFactory(_ => host));
+        Action<JsValue> resolve = null!;
+        engine.SetValue("pending", new Func<JsValue>(() => {
+            var registration = engine.RegisterPromise();
+            resolve = registration.Resolve;
+            return registration.Promise;
+        }));
+        engine.Execute("var called = false; pending().then(() => called = true)");
+        host.Active = false;
+        resolve(42);
+        engine.Advanced.ProcessTasks();
+        engine.Evaluate("called").AsBoolean().Should().BeFalse();
+    }
+
     [Fact]
     public void RegisterPromise_CalledWithinExecute_ResolvesCorrectly()
     {
