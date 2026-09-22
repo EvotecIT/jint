@@ -14,7 +14,8 @@ backport without adopting Jint 5's broader runtime surface.
 execution context retires. Eligibility is checked for every job, including reactions
 queued during a drain and late host-promise settlement. It does not interrupt the
 currently executing script or cancel external operations. The default host permits
-all jobs; OfficeIMO supplies its realm-lifetime policy.
+all jobs; OfficeIMO supplies its realm-lifetime policy. The upstream contribution
+is [Jint #4148](https://github.com/sebastienros/jint/pull/4148).
 
 History policy, frame messaging, resource budgets, navigation and rendering remain
 in OfficeIMO. Validate the host API and the consuming worker before changing its
