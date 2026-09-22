@@ -7,7 +7,7 @@ The maintained change adds `JsValue.IsLengthTrackingArrayBufferView()`. A host c
 preserve a typed array or DataView's construction mode when serializing it, without
 executing script, resizing its buffer, or reading private fields through reflection.
 Bounds and detachment checks remain the caller's responsibility. The same API is
-prepared separately against upstream `main`; this branch carries its narrow 4.16
+proposed against upstream `main` in [Jint #4146](https://github.com/sebastienros/jint/pull/4146); this branch carries its narrow 4.16
 backport without adopting Jint 5's broader runtime surface.
 
 History policy, frame messaging, resource budgets, navigation and rendering remain
