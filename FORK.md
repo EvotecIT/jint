@@ -22,6 +22,11 @@ in OfficeIMO. Validate the host API and the consuming worker before changing its
 source pin. Fork builds are not official Jint releases; do not publish them under
 upstream package identities.
 
+Source builds require the .NET 10.0.300 SDK band or later. The generator's Roslyn
+5.6 reference must load into the consuming compiler, including when another
+repository builds Jint through a project reference. The SDK floor applies to all
+runtime target frameworks; it does not change their framework support.
+
 ```sh
 dotnet test Jint.Tests.PublicInterface/Jint.Tests.PublicInterface.csproj -c Release -f net10.0 --filter FullyQualifiedName~HostBufferViewMetadataTests
 ```
