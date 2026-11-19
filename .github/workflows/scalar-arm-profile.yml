@@ -51,7 +51,7 @@ jobs:
         with:
           name: scalar-arm-profile-${{ matrix.worker }}
           path: ${{ runner.temp }}/scalar-profile
-          retention-days: 14
+          retention-days: 7
 
   verify:
     if: github.event_name != 'workflow_dispatch' || !inputs.profile
@@ -86,4 +86,4 @@ jobs:
         with:
           name: scalar-arm-verify-${{ matrix.worker }}
           path: ${{ runner.temp }}/scalar-verify
-          retention-days: 14
+          retention-days: 7

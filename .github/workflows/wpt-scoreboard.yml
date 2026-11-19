@@ -273,7 +273,7 @@ jobs:
         name: wptreport
         path: ${{ runner.temp }}/wptreport.json
         if-no-files-found: warn
-        retention-days: 30
+        retention-days: 7
 
     # The other half of the "did the runner work" question, and it takes two thresholds because they catch
     # different failures. --min-tests catches a run that produced almost no results. Its default sibling
