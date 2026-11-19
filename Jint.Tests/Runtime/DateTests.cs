@@ -1,4 +1,4 @@
-﻿using Jint.Native;
+using Jint.Native;
 
 namespace Jint.Tests.Runtime;
 
@@ -244,7 +244,7 @@ public class DateTests
         TimeZoneInfo timeZoneInfo;
         try
         {
-            timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("Europe/Kiev");
+            timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("Europe/Kyiv");
         }
         catch
         {
