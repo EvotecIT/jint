@@ -1,4 +1,4 @@
-using Jint.Native;
+﻿using Jint.Native;
 
 namespace Jint.Tests.Runtime;
 
